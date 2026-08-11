@@ -1,0 +1,16 @@
+torch>=2.2
+transformers>=4.46,<5
+datasets>=2.18
+peft>=0.13
+accelerate>=0.30
+bitsandbytes>=0.43
+numpy>=1.24
+scikit-learn>=1.4
+imbalanced-learn>=0.12
+xgboost>=2.0
+lightgbm>=4.3
+catboost>=1.2
+optuna>=3.6
+PyYAML>=6.0
+tqdm>=4.66
+joblib>=1.3

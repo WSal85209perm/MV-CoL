@@ -1,0 +1,31 @@
+extends: reference_defaults.yaml
+
+data:
+  dataset_name: Urgency
+  num_labels: 2
+  labels: [Non-Urgent, Urgent]
+  output_labels: [Non-Urgent, Urgent]
+  label_aliases: {"0": Non-Urgent, "1": Urgent}
+  label_definitions:
+    Non-Urgent: The post is a general comment, reflection, gratitude, agreement, or social contribution that does not require timely assistance.
+    Urgent: The post reports a blocking problem or asks a specific question requiring timely instructor or teaching-assistant attention.
+  behavior_cues:
+    Non-Urgent: [calm declarative tone, gratitude or agreement, peer discussion, non-blocking reflection]
+    Urgent: [explicit request for help, course-content confusion, technical or access failure, deadline concern, blocking issue]
+  task_description: Classify whether a MOOC post requires timely instructor or teaching-assistant attention.
+  task_instruction: Judge the need for action from the complete post, not emotional wording alone.
+  train_file: data/urgency/train.jsonl
+  validation_file: data/urgency/validation.jsonl
+  test_file: data/urgency/test.jsonl
+  text_field: text
+  label_field: label
+  id_field: id
+
+training:
+  output_dir: outputs/urgency/reference_run/lora_adapter
+features:
+  adapter_path: outputs/urgency/reference_run/lora_adapter/final_adapter
+  view_dir: outputs/urgency/reference_run/view_features
+  fused_dir: outputs/urgency/reference_run/fused_features
+ensemble:
+  output_dir: outputs/urgency/reference_run/ensemble

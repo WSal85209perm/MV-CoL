@@ -1,0 +1,31 @@
+extends: reference_defaults.yaml
+
+data:
+  dataset_name: Answer
+  num_labels: 2
+  labels: [Non-Answer, Answer]
+  output_labels: [Non-Answer, Answer]
+  label_aliases: {"0": Non-Answer, "1": Answer}
+  label_definitions:
+    Non-Answer: The post does not provide information, an explanation, clarification, or a solution in response to an information need.
+    Answer: The post supplies information, an explanation, clarification, evidence, or a solution that addresses a question or problem.
+  behavior_cues:
+    Non-Answer: [unanswered question, greeting or social response, unrelated comment, acknowledgement without substantive information]
+    Answer: [direct response, explanatory reasoning, corrective information, actionable solution or resource addressing a need]
+  task_description: Detect whether a MOOC discussion post functions as an answer.
+  task_instruction: Consider whether the contribution substantively addresses an explicit or implicit question or problem.
+  train_file: data/answer/train.jsonl
+  validation_file: data/answer/validation.jsonl
+  test_file: data/answer/test.jsonl
+  text_field: text
+  label_field: label
+  id_field: id
+
+training:
+  output_dir: outputs/answer/reference_run/lora_adapter
+features:
+  adapter_path: outputs/answer/reference_run/lora_adapter/final_adapter
+  view_dir: outputs/answer/reference_run/view_features
+  fused_dir: outputs/answer/reference_run/fused_features
+ensemble:
+  output_dir: outputs/answer/reference_run/ensemble

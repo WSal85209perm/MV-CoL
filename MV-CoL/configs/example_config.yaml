@@ -1,0 +1,3 @@
+# Backward-compatible example alias. Use one of the six task configs directly
+# for an actual run. All numeric values inherited below are reference defaults.
+extends: icap_psy.yaml

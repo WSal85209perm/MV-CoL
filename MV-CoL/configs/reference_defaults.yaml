@@ -1,0 +1,114 @@
+# Shared executable reference defaults. These are not paper-final tuned values.
+# Dataset configs inherit this file and provide task-specific prompt metadata,
+# paths, and output directories.
+seed: 42
+
+model:
+  name_or_path: meta-llama/Meta-Llama-3-8B-Instruct
+  trust_remote_code: false
+  max_length: 512
+  load_in_4bit: true
+  bnb_4bit_quant_type: nf4
+  bnb_4bit_compute_dtype: bfloat16
+  bnb_4bit_use_double_quant: true
+
+lora:
+  r: 64
+  alpha: 128
+  dropout: 0.05
+  target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+
+training:
+  num_train_epochs: 3
+  per_device_train_batch_size: 8
+  per_device_eval_batch_size: 8
+  gradient_accumulation_steps: 2
+  learning_rate: 0.00004
+  weight_decay: 0.01
+  warmup_ratio: 0.05
+  logging_steps: 10
+  eval_steps: 100
+  save_steps: 100
+  eval_strategy: steps
+  save_strategy: steps
+  save_total_limit: 2
+  load_best_model_at_end: true
+  metric_for_best_model: eval_loss
+  greater_is_better: false
+  gradient_checkpointing: true
+  bf16: true
+  fp16: false
+  lambda_supcon: 0.7
+  lambda_triplet: 0.3
+  supcon_temperature: 0.07
+  triplet_margin: 1.0
+  # Released-reference choices; neither is silently changed by the code.
+  projection_head_mode: separate
+  triplet_mining: batch_hard
+  projection_hidden_dim: 512
+  projection_dim: 128
+  projection_dropout: 0.1
+
+features:
+  batch_size: 4
+
+ensemble:
+  n_trials: 30
+  timeout_seconds: null
+  cv_folds: 5
+  n_jobs: -1
+  minimum_selected_models: 3
+  candidate_models:
+    [xgboost, lightgbm, catboost, random_forest, extra_trees, knn, nusvc]
+  save_local_search_artifacts: false
+  pca:
+    min_components: 64
+    max_components: 512
+    step: 64
+    svd_solver: randomized
+  borderline_smote:
+    sampling_strategy: auto
+    kind: borderline-1
+    k_neighbors_choices: [3, 5, 7]
+    m_neighbors: 10
+  # Fixed compute budgets are public defaults, not selected paper parameters.
+  classifier_defaults:
+    xgboost:
+      n_estimators: 300
+      subsample: 0.9
+      colsample_bytree: 0.9
+      n_jobs: 1
+    lightgbm:
+      n_estimators: 300
+      class_weight: balanced
+      n_jobs: 1
+    catboost:
+      iterations: 300
+      thread_count: 1
+    random_forest:
+      n_estimators: 400
+      class_weight: balanced_subsample
+      n_jobs: 1
+    extra_trees:
+      n_estimators: 400
+      class_weight: balanced
+      n_jobs: 1
+    knn:
+      weights: distance
+    nusvc:
+      probability: true
+    meta_logistic_regression:
+      class_weight: balanced
+      max_iter: 3000
+  search_space:
+    xgb_learning_rate: [0.005, 0.08]
+    xgb_max_depth: [4, 10]
+    lgbm_learning_rate: [0.005, 0.08]
+    lgbm_num_leaves: [15, 63]
+    catboost_learning_rate: [0.005, 0.08]
+    catboost_depth: [4, 10]
+    rf_max_depth: [8, 24]
+    extra_trees_max_depth: [8, 24]
+    nusvc_nu: [0.02, 0.15]
+    knn_neighbors: [3, 15]
+    meta_c: [0.1, 2.0]

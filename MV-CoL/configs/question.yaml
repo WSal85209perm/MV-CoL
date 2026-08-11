@@ -1,0 +1,31 @@
+extends: reference_defaults.yaml
+
+data:
+  dataset_name: Question
+  num_labels: 2
+  labels: [Non-Question, Question]
+  output_labels: [Non-Question, Question]
+  label_aliases: {"0": Non-Question, "1": Question}
+  label_definitions:
+    Non-Question: The post does not seek information, clarification, confirmation, or help from another participant.
+    Question: The post explicitly or implicitly seeks information, clarification, confirmation, explanation, or help.
+  behavior_cues:
+    Non-Question: [declarative statement, answer or explanation, greeting or acknowledgement without an information request]
+    Question: [interrogative construction, question mark, why/how/what request, request for clarification or assistance]
+  task_description: Detect whether a MOOC discussion post functions as a question.
+  task_instruction: Judge communicative function rather than punctuation alone and select the best question label.
+  train_file: data/question/train.jsonl
+  validation_file: data/question/validation.jsonl
+  test_file: data/question/test.jsonl
+  text_field: text
+  label_field: label
+  id_field: id
+
+training:
+  output_dir: outputs/question/reference_run/lora_adapter
+features:
+  adapter_path: outputs/question/reference_run/lora_adapter/final_adapter
+  view_dir: outputs/question/reference_run/view_features
+  fused_dir: outputs/question/reference_run/fused_features
+ensemble:
+  output_dir: outputs/question/reference_run/ensemble

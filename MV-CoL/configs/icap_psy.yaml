@@ -1,0 +1,33 @@
+extends: reference_defaults.yaml
+
+data:
+  dataset_name: ICAP-PSY
+  num_labels: 3
+  labels: [Active, Constructive, Interactive]
+  output_labels: [Active, Constructive, Interactive]
+  label_aliases: {"0": Active, "1": Constructive, "2": Interactive}
+  label_definitions:
+    Active: The learner manipulates, repeats, selects, or copies provided content without adding a new inference.
+    Constructive: The learner generates a new idea, inference, explanation, or connection beyond the provided content.
+    Interactive: The learner substantively builds on another participant's idea to co-construct knowledge.
+  behavior_cues:
+    Active: [repetition or paraphrase, selection or copying, procedural manipulation without new inference]
+    Constructive: [self-generated explanation, inference or justification, connecting ideas or proposing a new interpretation]
+    Interactive: [direct uptake of another contribution, extending or challenging peer reasoning, reciprocal knowledge construction]
+  task_description: Classify the cognitive-engagement mode expressed in a learner's contribution under the ICAP framework.
+  task_instruction: Use both the contribution's reasoning and its relationship to prior discourse to select the best ICAP-PSY label.
+  train_file: data/icap_psy/train.jsonl
+  validation_file: data/icap_psy/validation.jsonl
+  test_file: data/icap_psy/test.jsonl
+  text_field: text
+  label_field: label
+  id_field: id
+
+training:
+  output_dir: outputs/icap_psy/reference_run/lora_adapter
+features:
+  adapter_path: outputs/icap_psy/reference_run/lora_adapter/final_adapter
+  view_dir: outputs/icap_psy/reference_run/view_features
+  fused_dir: outputs/icap_psy/reference_run/fused_features
+ensemble:
+  output_dir: outputs/icap_psy/reference_run/ensemble

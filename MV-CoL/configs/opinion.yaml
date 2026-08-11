@@ -1,0 +1,31 @@
+extends: reference_defaults.yaml
+
+data:
+  dataset_name: Opinion
+  num_labels: 2
+  labels: [Non-Opinion, Opinion]
+  output_labels: [Non-Opinion, Opinion]
+  label_aliases: {"0": Non-Opinion, "1": Opinion}
+  label_definitions:
+    Non-Opinion: The post is primarily factual, logistical, technical, instructional, interrogative, or social without expressing a personal stance.
+    Opinion: The post expresses a subjective belief, personal insight, evaluation, critique, argument, agreement, or reflection.
+  behavior_cues:
+    Non-Opinion: [fact reporting, deadline or logistics query, instructions or link sharing, greeting without evaluation]
+    Opinion: [first-person stance, agreement or disagreement, evaluative language, critique, personal interpretation or reflection]
+  task_description: Detect whether a MOOC discussion post expresses an opinion.
+  task_instruction: Distinguish subjective stance and evaluation from facts, logistics, questions, instructions, and social messages.
+  train_file: data/opinion/train.jsonl
+  validation_file: data/opinion/validation.jsonl
+  test_file: data/opinion/test.jsonl
+  text_field: text
+  label_field: label
+  id_field: id
+
+training:
+  output_dir: outputs/opinion/reference_run/lora_adapter
+features:
+  adapter_path: outputs/opinion/reference_run/lora_adapter/final_adapter
+  view_dir: outputs/opinion/reference_run/view_features
+  fused_dir: outputs/opinion/reference_run/fused_features
+ensemble:
+  output_dir: outputs/opinion/reference_run/ensemble

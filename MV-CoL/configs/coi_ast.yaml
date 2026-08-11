@@ -1,0 +1,35 @@
+extends: reference_defaults.yaml
+
+data:
+  dataset_name: CoI-AST
+  num_labels: 4
+  labels: [Triggering, Exploration, Integration, Resolution]
+  output_labels: [Triggering, Exploration, Integration, Resolution]
+  label_aliases: {"0": Triggering, "1": Exploration, "2": Integration, "3": Resolution}
+  label_definitions:
+    Triggering: The post introduces a problem, asks a question, or expresses a puzzling event or confusion.
+    Exploration: The post searches for information, brainstorms, exchanges ideas, or offers a tentative and insufficiently connected view.
+    Integration: The post connects, synthesizes, or explains ideas to form a coherent understanding.
+    Resolution: The post applies or tests knowledge, defends a solution, or resolves the problem in practice.
+  behavior_cues:
+    Triggering: [why/how questions, explicit confusion, problem identification]
+    Exploration: [brainstorming, information exchange, tentative suggestions or unsupported opinions]
+    Integration: [because-based explanation, connecting concepts, synthesis or justified conclusion]
+    Resolution: [application to practice, testing a hypothesis, implementing or defending a solution]
+  task_description: Classify a learner post into a Community of Inquiry cognitive-presence phase for the AST task.
+  task_instruction: Select the phase that best represents the post's overall inquiry progress and cognitive operation.
+  train_file: data/coi_ast/train.jsonl
+  validation_file: data/coi_ast/validation.jsonl
+  test_file: data/coi_ast/test.jsonl
+  text_field: text
+  label_field: label
+  id_field: id
+
+training:
+  output_dir: outputs/coi_ast/reference_run/lora_adapter
+features:
+  adapter_path: outputs/coi_ast/reference_run/lora_adapter/final_adapter
+  view_dir: outputs/coi_ast/reference_run/view_features
+  fused_dir: outputs/coi_ast/reference_run/fused_features
+ensemble:
+  output_dir: outputs/coi_ast/reference_run/ensemble
